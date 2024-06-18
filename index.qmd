@@ -1,0 +1,38 @@
+---
+title: "Household Income in Texas"
+execute: 
+  echo: false
+  message: false
+---
+
+```{r}
+#| echo: false
+#| message: false
+library(tidyverse)
+library(tidycensus)
+library(sf)
+```
+
+```{r}
+#| echo: false
+#| message: false
+# Fetch the shapefiles for Texas census tracts
+tx_tracts <- get_acs(geography = "tract", 
+                     variables = "B19013_001", 
+                     year = 2019, 
+                     survey = "acs5", 
+                     state = "48", 
+                     geometry = TRUE,
+                     progress = FALSE)
+
+# Plotting the median household income by census tract in Texas
+ggplot(tx_tracts) +
+  geom_sf(aes(fill = estimate), color = NA) +
+  scale_fill_viridis_c(option = "viridis") +
+  labs(title = "Median Household Income by Census Tract in Texas",
+       fill = "Income") +
+  theme_minimal()
+
+```
+
+
